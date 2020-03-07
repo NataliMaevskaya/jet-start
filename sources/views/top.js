@@ -22,7 +22,11 @@ export default class TopView extends JetView {
 	}
 	init() {
 		this.topview = this.$$("top:menu");
-		this.topview.parse(data);
-		this.topview.select(data.config.data[0].id);
+		this.topview.parse(data);		
+	}
+	urlChange(view, url) {
+		if(url[1] && url[1].page) {
+			this.topview.select(url[1].page);
+		}
 	}
 }
