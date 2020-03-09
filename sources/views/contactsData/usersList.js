@@ -16,6 +16,12 @@ export default class UsersListView extends JetView {
 					scroll: "y",
 					onClick: {
 						"wxi-close": (e, id) => this.deleteUserInfo(id)
+					},
+					on: {
+						onAfterSelect: (id) => {
+							this.setParamToUrl(id);
+							this.app.callEvent("onChangeUsersListUrl", [contacts.getItem(id)]);
+						}
 					}
 				},
 				{
@@ -34,19 +40,16 @@ export default class UsersListView extends JetView {
 		let id = this.getParam("id");
 		if(!id || !contacts.exists(id)) {
 			id = contacts.getFirstId();
-			this.setParamToUrl(id);
 		}		
 		this.list.select(id);
-		
-		this.list.attachEvent("onAfterSelect", (id) => this.setParamToUrl(id));
 	}
 	addUsersInfo() {
-		const addedId = contacts.add({Name: "User", Email: "user@gmail.com"});
+		const addedId = contacts.add({Name: "User", Email: "user@gmail.com"}, 0);
 
 		webix.message("User's info is added");
 		this.list.select(addedId);
 		this.setParamToUrl(addedId);
-		this.app.callEvent("onChangeUsersListUrl", [contacts.getItem(addedId)]);
+		webix.message("Fill all field and press Save button");
 
 	}
 	deleteUserInfo(id) {
@@ -61,7 +64,6 @@ export default class UsersListView extends JetView {
 		
 		if (urlId && this.list.exists(urlId)){
 			this.list.select(urlId);
-			this.app.callEvent("onChangeUsersListUrl", [contacts.getItem(urlId)]);
 		}
 	}	
 }
