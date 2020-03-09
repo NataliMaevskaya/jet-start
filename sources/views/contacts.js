@@ -1,5 +1,6 @@
 import { JetView } from "webix-jet";
-import { contacts } from "models/contacts";
+import usersForm from "views/contactsData/usersForm.js";
+import usersList from "views/contactsData/usersList.js";
 
 export default class ContactsView extends JetView {
 	config() {
@@ -11,33 +12,6 @@ export default class ContactsView extends JetView {
 				view: "label",
 				label: "Contacts"
 			}]
-		};
-		const usersList = {
-			view: "list",
-			type:{
-				height:40
-			},
-			localId: "contacts:usersList",
-			template: "<strong>#Name#</strong> (<ins>e-mail</ins>: <em>#Email#</em>) <span class='webix_icon wxi-close btn-right'></span>",
-			select: true,
-			scroll: "y"
-		};
-		const usersForm = {
-			view: "form",
-			localId: "contacts:usersForm",
-			paddingX: 100,
-			margin: 20,
-			elements: [
-				{
-					view: "text",
-					label: "User Name"
-				},
-				{
-					view: "text",
-					label: "Email",
-				},
-				{}
-			]
 		};
 		const contactsView = {
 			rows: [
@@ -51,8 +25,5 @@ export default class ContactsView extends JetView {
 			]
 		};
 		return contactsView;
-	}
-	init() {
-		this.$$("contacts:usersList").parse(contacts);
 	}
 }

@@ -34,7 +34,6 @@ export default class TableToolbar extends JetView {
 					click: () => this.deleteItem()
 				}
 			]
-
 		};
 		const tabletoolbar = {
 			rows: [
