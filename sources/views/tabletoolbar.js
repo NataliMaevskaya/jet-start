@@ -34,7 +34,6 @@ export default class TableToolbar extends JetView {
 					click: () => this.deleteItem()
 				}
 			]
-
 		};
 		const tabletoolbar = {
 			rows: [
@@ -51,7 +50,7 @@ export default class TableToolbar extends JetView {
 	}
 
 	addItem() {
-		const addedId = this.datatable.add({}, 0);
+		const addedId = this.datatable.add({Name: "Name"}, 0);
 		this.datatable.edit({
 			row: addedId,
 			column: "Name"
