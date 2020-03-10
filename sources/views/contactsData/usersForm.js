@@ -72,10 +72,17 @@ export default class UsersFormView extends JetView {
 		}
 	}
 	urlChange(view, url) {
-		const urlId = url[0].params.id;
-		if (urlId && contacts.exists(urlId)) {
-			view.setValues(contacts.getItem(urlId));
-			view.clearValidation();
-		} 		
+		webix.promise.all([
+			contacts.waitData,
+			countries.waitData,
+			statuses.waitData
+		]).then(() => {
+			const urlId = url[0].params.id;
+			if (urlId && contacts.exists(urlId)) {
+				view.setValues(contacts.getItem(urlId));
+				view.clearValidation();
+			} 
+		});
+				
 	} 
 }

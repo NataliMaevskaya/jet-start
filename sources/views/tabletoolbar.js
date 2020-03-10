@@ -47,15 +47,22 @@ export default class TableToolbar extends JetView {
 
 	init() {
 		this.datatable = this.$$("data:datatable");
-		this.datatable.parse(this._gridData);
+		this._gridData.waitData
+			.then(() => {
+				this.datatable.sync(this._gridData);
+			});
 	}
 
 	addItem() {
-		const addedId = this.datatable.add({}, 0);
-		this.datatable.edit({
-			row: addedId,
-			column: "Name"
-		});
+		this._gridData.waitSave(() => {
+			this._gridData.add({}, 0);
+		})
+			.then((res) => {
+				this.datatable.edit({
+					row: res.id,
+					column: "Name"
+				});
+			});
 	}
 
 	deleteItem() {
@@ -64,7 +71,7 @@ export default class TableToolbar extends JetView {
 			webix.confirm({
 				text: "Record will be deleted permanently! Continue?"
 			}).then(() => {
-				this.datatable.remove(selectedId);
+				this._gridData.remove(selectedId);
 			});
 		}
 	}
