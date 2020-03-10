@@ -3,6 +3,7 @@ import {contacts} from "models/contacts.js";
 
 export default class UsersListView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [
 				{
@@ -26,7 +27,7 @@ export default class UsersListView extends JetView {
 				},
 				{
 					view: "button",
-					value: "Add",
+					value: _("Add"),
 					click: () => this.addUsersInfo()
 				}
 

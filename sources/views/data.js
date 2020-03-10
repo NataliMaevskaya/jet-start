@@ -5,13 +5,14 @@ import { statuses } from "models/statuses.js";
 
 export default class DataView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const dataHeader = {
 			view: "toolbar",
 			localId: "data:dataHeader",
 			css: "webix_dark",
 			elements: [{
 				view: "label",
-				label: "Data"
+				label: _("Data")
 			}]
 		};
 		const segmentedToolbar = {
@@ -21,12 +22,12 @@ export default class DataView extends JetView {
 			options: [
 				{
 					id: "data:countries",
-					value: "Countries"
+					value: _("Countries")
 
 				},
 				{
 					id: "data:statuses",
-					value: "Statuses"
+					value: _("Statuses")
 
 				}
 			]

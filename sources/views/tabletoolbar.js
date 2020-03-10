@@ -7,6 +7,7 @@ export default class TableToolbar extends JetView {
 	}
 
 	config() {
+		const _ = this.app.getService("locale")._;
 		const datatable = {
 			view: "datatable",
 			autoConfig: true,
@@ -24,13 +25,13 @@ export default class TableToolbar extends JetView {
 				{
 					view: "button",
 					localId: "data:addButton",
-					value: "Add",
+					value: _("Add"),
 					click: () => this.addItem()
 				},
 				{
 					view: "button",
 					localId: "data:deleteButton",
-					value: "Delete",
+					value: _("Delete"),
 					click: () => this.deleteItem()
 				}
 			]

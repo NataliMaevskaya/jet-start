@@ -4,13 +4,14 @@ import usersList from "views/contactsData/usersList.js";
 
 export default class ContactsView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		const contactsHeader = {
 			view: "toolbar",
 			localId: "contacts:contactsHeader",
 			css: "webix_dark",
 			elements: [{
 				view: "label",
-				label: "Contacts"
+				label: _("Contacts")
 			}]
 		};
 		const contactsView = {

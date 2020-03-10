@@ -5,6 +5,7 @@ import { statuses } from "models/statuses";
 
 export default class UsersFormView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			view: "form",
 			localId: "contacts:usersForm",
@@ -13,33 +14,33 @@ export default class UsersFormView extends JetView {
 			elements: [
 				{
 					view: "text",
-					label: "Name",
+					label: _("Name"),
 					name: "Name", 
 					invalidMessage: "Name field cannot be empty!"
 				},
 				{
 					view: "text",
-					label: "Email",
+					label: _("Email"),
 					name: "Email", 
 					invalidMessage: "Email field cannot be empty!"
 				},
 				{ 
 					view: "combo", 
-					label: "Country", 
+					label: _("Country"), 
 					value: 1, 
 					name: "Country", 
 					options: { body: {template:"#Name#"}, data: countries }, 
 					invalidMessage: "Choose the country!" },
 				{ 
 					view: "combo", 
-					label: "Status", 
+					label: _("Status"), 
 					value: 1, 
 					name: "Status", 
 					options: { body: {template:"#Name#"}, data: statuses }, 
 					invalidMessage: "Choose the status!" },
 				{ 
 					view: "button", 
-					label: "Save", 
+					label: _("Save"), 
 					hotkey:"enter",					
 					click: () => this.saveUserData()
 				},
