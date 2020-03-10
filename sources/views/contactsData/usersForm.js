@@ -62,14 +62,17 @@ export default class UsersFormView extends JetView {
 	}
 	
 	saveUserData() {
-		if (this.form.validate()) {
-			const values = this.form.getValues();
-			if (values.id) {
-				contacts.updateItem(values.id, values);
-				webix.message("User's data is updated");
-			} 
+		contacts.waitSave(() => {
+			if (this.form.validate()) {
+				const values = this.form.getValues();
+				if (values.id) {
+					contacts.updateItem(values.id, values);
+				}
+			}
+		}).then(() => {
+			webix.message("User's data is updated");
 			this.form.clear();
-		}
+		});
 	}
 	urlChange(view, url) {
 		webix.promise.all([

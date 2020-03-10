@@ -56,13 +56,12 @@ export default class TableToolbar extends JetView {
 	addItem() {
 		this._gridData.waitSave(() => {
 			this._gridData.add({}, 0);
-		})
-			.then((res) => {
-				this.datatable.edit({
-					row: res.id,
-					column: "Name"
-				});
+		}).then((res) => {
+			this.datatable.edit({
+				row: res.id,
+				column: "Name"
 			});
+		});
 	}
 
 	deleteItem() {
