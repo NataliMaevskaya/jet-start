@@ -3,6 +3,7 @@ import {contacts} from "models/contacts.js";
 
 export default class UsersListView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			rows: [
 				{
@@ -26,7 +27,7 @@ export default class UsersListView extends JetView {
 				},
 				{
 					view: "button",
-					value: "Add",
+					value: _("Add"),
 					click: () => this.addUsersInfo()
 				}
 
@@ -44,24 +45,28 @@ export default class UsersListView extends JetView {
 		this.list.select(id);
 	}
 	addUsersInfo() {
-		const addedId = contacts.add({Name: "User", Email: "user@gmail.com"}, 0);
-
-		webix.message("User's info is added");
-		this.list.select(addedId);
-		this.setParamToUrl(addedId);
-		webix.message("Fill all field and press Save button");
-
+		contacts.waitSave(() => {
+			contacts.add({Name: "User", Email: "user@gmail.com"}, 0);
+		}).then((res) => {
+			webix.message("User's info is added");
+			this.list.select(res.id);
+			webix.message("Fill all field and press Save button");
+		});
 	}
 	deleteUserInfo(id) {
-		contacts.remove(id);
-		webix.message("User's info is deleted");
+		webix.confirm({
+			text: "Record will be deleted permanently! Continue?"
+		}).then(() => {
+			contacts.remove(id);
+			webix.message("User's info is deleted");
+		});		
 	}
 	setParamToUrl(id) {
 		this.setParam("id", id, true);
 	}
 	urlChange(view, url) {
 		const urlId = url[0].params.id;
-		
+	
 		if (urlId && this.list.exists(urlId)){
 			this.list.select(urlId);
 		}

@@ -5,6 +5,7 @@ import { statuses } from "models/statuses";
 
 export default class UsersFormView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			view: "form",
 			localId: "contacts:usersForm",
@@ -13,33 +14,33 @@ export default class UsersFormView extends JetView {
 			elements: [
 				{
 					view: "text",
-					label: "Name",
+					label: _("Name"),
 					name: "Name", 
 					invalidMessage: "Name field cannot be empty!"
 				},
 				{
 					view: "text",
-					label: "Email",
+					label: _("Email"),
 					name: "Email", 
 					invalidMessage: "Email field cannot be empty!"
 				},
 				{ 
 					view: "combo", 
-					label: "Country", 
+					label: _("Country"), 
 					value: 1, 
 					name: "Country", 
 					options: { body: {template:"#Name#"}, data: countries }, 
 					invalidMessage: "Choose the country!" },
 				{ 
 					view: "combo", 
-					label: "Status", 
+					label: _("Status"), 
 					value: 1, 
 					name: "Status", 
 					options: { body: {template:"#Name#"}, data: statuses }, 
 					invalidMessage: "Choose the status!" },
 				{ 
 					view: "button", 
-					label: "Save", 
+					label: _("Save"), 
 					hotkey:"enter",					
 					click: () => this.saveUserData()
 				},
@@ -61,20 +62,30 @@ export default class UsersFormView extends JetView {
 	}
 	
 	saveUserData() {
-		if (this.form.validate()) {
-			const values = this.form.getValues();
-			if (values.id) {
-				contacts.updateItem(values.id, values);
-				webix.message("User's data is updated");
-			} 
+		contacts.waitSave(() => {
+			if (this.form.validate()) {
+				const values = this.form.getValues();
+				if (values.id) {
+					contacts.updateItem(values.id, values);
+				}
+			}
+		}).then(() => {
+			webix.message("User's data is updated");
 			this.form.clear();
-		}
+		});
 	}
 	urlChange(view, url) {
-		const urlId = url[0].params.id;
-		if (urlId && contacts.exists(urlId)) {
-			view.setValues(contacts.getItem(urlId));
-			view.clearValidation();
-		} 		
+		webix.promise.all([
+			contacts.waitData,
+			countries.waitData,
+			statuses.waitData
+		]).then(() => {
+			const urlId = url[0].params.id;
+			if (urlId && contacts.exists(urlId)) {
+				view.setValues(contacts.getItem(urlId));
+				view.clearValidation();
+			} 
+		});
+				
 	} 
 }
